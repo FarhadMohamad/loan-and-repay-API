@@ -16,6 +16,8 @@ using Microsoft.Owin.Security.OAuth;
 using LoanAndRepayAPI.Models;
 using LoanAndRepayAPI.Providers;
 using LoanAndRepayAPI.Results;
+using System.Text;
+using System.Net;
 
 namespace LoanAndRepayAPI.Controllers
 {
@@ -172,7 +174,7 @@ namespace LoanAndRepayAPI.Controllers
             {
                 return BadRequest("External login failure.");
             }
-
+            
             ExternalLoginData externalData = ExternalLoginData.FromIdentity(ticket.Identity);
 
             if (externalData == null)
@@ -339,6 +341,45 @@ namespace LoanAndRepayAPI.Controllers
 
             return Ok();
         }
+
+
+        // POST api/User/Login
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.AllowAnonymous]
+        [Route("Login")]
+        public async Task<HttpResponseMessage> LoginUser(LoginUserBindingModel model)
+        {
+            // Invoke the "token" OWIN service to perform the login: /api/token
+            // Ugly hack: I use a server-side HTTP POST because I cannot directly invoke the service (it is deeply hidden in the OAuthAuthorizationServerHandler class)
+            var request = HttpContext.Current.Request;
+            //To use locally
+            //var tokenServiceUrl = "http://127.0.0.1:61902/Token"; 
+            var tokenServiceUrl = request.Url.GetLeftPart(UriPartial.Authority) + request.ApplicationPath + "/Token";
+
+
+            using (var client = new HttpClient())
+            {
+                var requestParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("grant_type", "password"),
+                new KeyValuePair<string, string>("username", model.Username),
+                new KeyValuePair<string, string>("password", model.Password)
+            };
+                var requestParamsFormUrlEncoded = new FormUrlEncodedContent(requestParams);
+                var tokenServiceResponse = await client.PostAsync(tokenServiceUrl, requestParamsFormUrlEncoded);
+                var responseString = await tokenServiceResponse.Content.ReadAsStringAsync();
+                var responseCode = tokenServiceResponse.StatusCode;
+                var responseMsg = new HttpResponseMessage(responseCode)
+                {
+                    Content = new StringContent(responseString, Encoding.UTF8, "application/json")
+                };
+                return responseMsg;
+            }
+        }
+
+
+
+
 
         // POST api/Account/RegisterExternal
         [OverrideAuthentication]
