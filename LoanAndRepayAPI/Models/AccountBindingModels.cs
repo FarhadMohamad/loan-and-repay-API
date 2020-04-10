@@ -34,6 +34,11 @@ namespace LoanAndRepayAPI.Models
 
     public class RegisterBindingModel
     {
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
+
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -48,6 +53,7 @@ namespace LoanAndRepayAPI.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
     }
 
    

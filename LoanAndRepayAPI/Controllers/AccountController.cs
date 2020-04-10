@@ -334,6 +334,13 @@ namespace LoanAndRepayAPI.Controllers
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
+            if (result.Succeeded)
+            {
+               
+                //Calling provider to save data
+                ClientProvider.CreateUser(model);
+
+            }
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
