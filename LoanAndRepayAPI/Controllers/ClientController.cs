@@ -43,9 +43,10 @@ namespace LoanAndRepayAPI.Controllers
 
         }
 
-        //[Authorize]
-        [Route("api/InstallmentRequestStatus")]
-        public IHttpActionResult InstallmentRequestStatus()
+       //[Authorize]
+        [HttpGet]
+        [Route("api/StatusPending")]
+        public IHttpActionResult StatusPending(string email)
         {
 
             IList<InstallmentRequestStatusViewModel> installmentRequest = null;
@@ -62,14 +63,95 @@ namespace LoanAndRepayAPI.Controllers
             using (database)
             {
                 installmentRequest = (from installment in database.InstallmentRequests
-                                      //where installment.UserId == currentUserId
+                                          where installment.Email == email && installment.Status == 0
+                                     
 
-                                      
+
                                       select new InstallmentRequestStatusViewModel()
                                       {
-                                        
+
                                           Company = installment.Company,
-                                          Status = installment.Status
+                                          Status = "Pending",
+
+
+                                      }).ToList<InstallmentRequestStatusViewModel>();
+            }
+
+            if (installmentRequest.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(installmentRequest);
+        }
+
+        //[Authorize]
+        [HttpGet]
+        [Route("api/StatusAccepted")]
+        public IHttpActionResult StatusAccepted(string email)
+        {
+
+            IList<InstallmentRequestStatusViewModel> installmentRequest = null;
+
+           // string currentUserId = User.Identity.GetUserId();
+
+            LoanAndRepayEntities loanAndRepayEntities = new LoanAndRepayEntities();
+
+
+
+            var database = new LoanAndRepayEntities();
+
+
+            using (database)
+            {
+                installmentRequest = (from installment in database.InstallmentRequests
+                                     where installment.Email == email && installment.Status == 1
+                                      //where installment.Status == 1
+
+                                      select new InstallmentRequestStatusViewModel()
+                                      {
+
+                                          Company = installment.Company,
+                                          Status = "Accepted",
+
+
+                                      }).ToList<InstallmentRequestStatusViewModel>();
+            }
+
+            if (installmentRequest.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(installmentRequest);
+        }
+
+        //[Authorize]
+        [HttpGet]
+        [Route("api/StatusRejected")]
+        public IHttpActionResult StatusRejected(string email)
+        {
+
+            IList<InstallmentRequestStatusViewModel> installmentRequest = null;
+
+            //string currentUserId = User.Identity.GetUserId();
+
+            LoanAndRepayEntities loanAndRepayEntities = new LoanAndRepayEntities();
+
+
+
+            var database = new LoanAndRepayEntities();
+
+
+            using (database)
+            {
+                installmentRequest = (from installment in database.InstallmentRequests
+                                      where installment.Email == email && installment.Status == 2
+                                      //where installment.Status == 2
+
+                                      select new InstallmentRequestStatusViewModel()
+                                      {
+
+                                          Company = installment.Company,
+                                          Status = "Rejected"
 
 
                                       }).ToList<InstallmentRequestStatusViewModel>();

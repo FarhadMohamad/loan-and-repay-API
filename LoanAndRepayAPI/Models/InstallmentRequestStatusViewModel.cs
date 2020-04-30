@@ -8,7 +8,7 @@ namespace LoanAndRepayAPI.Models
     public class InstallmentRequestStatusViewModel
     {
         public string Company { get; set; }
-        public int? Status { get; set; }
+        public string Status { get; set; }
 
     }
 }
