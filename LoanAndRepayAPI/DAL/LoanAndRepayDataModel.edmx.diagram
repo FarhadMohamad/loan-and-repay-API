@@ -13,6 +13,8 @@
         <AssociationConnector Association="LoanAndRepayModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="LoanAndRepayModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="LoanAndRepayModel.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="LoanAndRepayModel.InstallmentRequest" Width="2.25" PointX="7.375" PointY="5.875" />
+        <AssociationConnector Association="LoanAndRepayModel.FK_InstallmentRequest_AspNetUsers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
