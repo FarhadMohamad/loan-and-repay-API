@@ -68,6 +68,22 @@
           <Property Name="FirstName" Type="nvarchar" MaxLength="256" />
           <Property Name="LastName" Type="nvarchar" MaxLength="256" />
         </EntityType>
+        <EntityType Name="CompanyInfo">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CVR" Type="int" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Website" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="ContactPerson" Type="nvarchar" MaxLength="50" />
+          <Property Name="StreetName" Type="nvarchar" MaxLength="50" />
+          <Property Name="HouseNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="CityName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PostCode" Type="int" />
+        </EntityType>
         <EntityType Name="InstallmentRequest">
           <Key>
             <PropertyRef Name="Id" />
@@ -89,6 +105,18 @@
           <Property Name="MonthlyPayment" Type="decimal" Precision="18" Scale="0" />
           <Property Name="Status" Type="int" />
         </EntityType>
+        <Association Name="FK_CompanyInfo_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="CompanyInfo" Type="Self.CompanyInfo" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyInfo">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -164,7 +192,12 @@
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompanyInfo" EntityType="Self.CompanyInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InstallmentRequest" EntityType="Self.InstallmentRequest" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CompanyInfo_AspNetUsers" Association="Self.FK_CompanyInfo_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="CompanyInfo" EntitySet="CompanyInfo" />
+          </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -251,6 +284,7 @@
           <Property Name="FirstName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="InstallmentRequests" Relationship="LoanAndRepayModel.FK_InstallmentRequest_AspNetUsers" FromRole="AspNetUser" ToRole="InstallmentRequest" />
+          <NavigationProperty Name="CompanyInfo" Relationship="LoanAndRepayModel.FK_CompanyInfo_AspNetUsers" FromRole="AspNetUser" ToRole="CompanyInfo" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -307,6 +341,11 @@
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="InstallmentRequest" EntitySet="InstallmentRequests" />
           </AssociationSet>
+          <EntitySet Name="CompanyInfoes" EntityType="LoanAndRepayModel.CompanyInfo" />
+          <AssociationSet Name="FK_CompanyInfo_AspNetUsers" Association="LoanAndRepayModel.FK_CompanyInfo_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="CompanyInfo" EntitySet="CompanyInfoes" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="InstallmentRequest">
           <Key>
@@ -338,6 +377,35 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="InstallmentRequest">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CompanyInfo">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CVR" Type="Int32" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Website" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ContactPerson" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StreetName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="HouseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CityName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PostCode" Type="Int32" />
+          <NavigationProperty Name="AspNetUser" Relationship="LoanAndRepayModel.FK_CompanyInfo_AspNetUsers" FromRole="CompanyInfo" ToRole="AspNetUser" />
+          <Property Name="CompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_CompanyInfo_AspNetUsers">
+          <End Type="LoanAndRepayModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="LoanAndRepayModel.CompanyInfo" Role="CompanyInfo" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyInfo">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -432,6 +500,23 @@
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="Company" ColumnName="Company" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyInfoes">
+            <EntityTypeMapping TypeName="LoanAndRepayModel.CompanyInfo">
+              <MappingFragment StoreEntitySet="CompanyInfo">
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="HouseNumber" ColumnName="HouseNumber" />
+                <ScalarProperty Name="StreetName" ColumnName="StreetName" />
+                <ScalarProperty Name="ContactPerson" ColumnName="ContactPerson" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="CVR" ColumnName="CVR" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -31,5 +31,6 @@ namespace LoanAndRepayAPI.DAL
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<InstallmentRequest> InstallmentRequests { get; set; }
+        public virtual DbSet<CompanyInfo> CompanyInfoes { get; set; }
     }
 }

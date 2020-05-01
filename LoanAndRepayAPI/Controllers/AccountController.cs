@@ -19,10 +19,14 @@ using LoanAndRepayAPI.Results;
 using System.Text;
 using System.Net;
 using Microsoft.AspNet.Identity.EntityFramework;
+using LoanAndRepayAPI.DAL;
+using LoanAndRepayAPI.Models;
+using System.Linq;
 
 namespace LoanAndRepayAPI.Controllers
 {
-    [Authorize]
+    
+
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
@@ -267,7 +271,10 @@ namespace LoanAndRepayAPI.Controllers
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
-                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
+                List<Claim> roles = oAuthIdentity.Claims.Where(c => c.Type == ClaimTypes.Role).ToList();
+                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName, Newtonsoft.Json.JsonConvert.SerializeObject(roles.Select(x => x.Value)));
+
+                //AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
                 Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
             }
             else
@@ -337,9 +344,40 @@ namespace LoanAndRepayAPI.Controllers
 
             if (result.Succeeded)
             {
-               
+                var UserId = UserManager.FindByEmail(model.Email);
                 //Calling provider to save data
                 ClientProvider.CreateUser(model);
+                UserManager.AddToRole(UserId.Id, "Client");
+
+            }
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
+            return Ok();
+        }
+
+        // POST api/Account/RegisterCompany
+        [AllowAnonymous]
+        [Route("RegisterCompany")]
+        public async Task<IHttpActionResult> RegisterCompany(RegisterCompanyBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+
+            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                var UserId = UserManager.FindByEmail(model.Email);
+                //Calling provider to save data
+                CompanyProvider.CreateUser(model, UserId.Id);
+                UserManager.AddToRole(UserId.Id, "Company");
 
             }
             if (!result.Succeeded)
@@ -381,6 +419,27 @@ namespace LoanAndRepayAPI.Controllers
                 {
                     Content = new StringContent(responseString, Encoding.UTF8, "application/json")
                 };
+                if (responseCode == HttpStatusCode.OK)
+                {
+
+                    LoanAndRepayEntities database = new LoanAndRepayEntities();
+
+                    var Bodyresponse = database.AspNetUsers.FirstOrDefault(X => X.Email == model.Username);
+
+                    // Get the roles associated with that user
+                    var userRoles = await UserManager.GetRolesAsync(Bodyresponse.Id.ToString());
+
+                    // Setup a RoleViewModel list of roles and iterate through userRoles adding them to the list
+                    List<UserRoleViewModel> roleList = new List<UserRoleViewModel>();
+                    foreach (var role in userRoles)
+                    {
+                        var item = new UserRoleViewModel { Role = role };
+                        roleList.Add(item);
+                        //return Ok(item);
+                        var res = responseMsg;
+
+                    }
+                }
                 return responseMsg;
             }
         }

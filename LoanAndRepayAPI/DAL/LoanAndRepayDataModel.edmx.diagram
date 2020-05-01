@@ -15,6 +15,8 @@
         <AssociationConnector Association="LoanAndRepayModel.AspNetUserRoles" ManuallyRouted="false" />
         <EntityTypeShape EntityType="LoanAndRepayModel.InstallmentRequest" Width="2.25" PointX="7.375" PointY="5.875" />
         <AssociationConnector Association="LoanAndRepayModel.FK_InstallmentRequest_AspNetUsers" />
+        <EntityTypeShape EntityType="LoanAndRepayModel.CompanyInfo" Width="1.5" PointX="3.75" PointY="6.625" />
+        <AssociationConnector Association="LoanAndRepayModel.FK_CompanyInfo_AspNetUsers" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
