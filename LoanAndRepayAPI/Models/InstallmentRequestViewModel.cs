@@ -22,4 +22,6 @@ namespace LoanAndRepayAPI.Models
         public decimal MonthlyPayment { get; set; }
         public int Status { get; set; } = 0;
     }
+
+  
 }
