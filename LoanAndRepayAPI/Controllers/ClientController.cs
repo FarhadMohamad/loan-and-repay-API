@@ -30,10 +30,10 @@ namespace LoanAndRepayAPI.Controllers
 
 
 
-            var findUserId = loanAndRepayEntities.AspNetUsers.Where(x => x.Id == currentUserId).SingleOrDefault();
+           // var findUserId = loanAndRepayEntities.AspNetUsers.Where(x => x.Id == currentUserId).SingleOrDefault();
             //if (req != null)
             //{
-            ClientProvider.SaveInstallmentRequest(model, findUserId.Id);
+            ClientProvider.SaveInstallmentRequest(model, currentUserId);
             EmailService.sendEmailToCompany(model);
 
 
