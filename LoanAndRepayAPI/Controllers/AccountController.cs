@@ -20,7 +20,7 @@ using System.Text;
 using System.Net;
 using Microsoft.AspNet.Identity.EntityFramework;
 using LoanAndRepayAPI.DAL;
-using LoanAndRepayAPI.Models;
+
 using System.Linq;
 
 namespace LoanAndRepayAPI.Controllers

@@ -13,7 +13,7 @@ namespace LoanAndRepayAPI.Controllers
 {
     public class CompanyController : ApiController
     {
-        //[Authorize]        
+        [Authorize]        
         [HttpGet]
         [Route("api/GetRequestList")]
         public IHttpActionResult GetRequestList(string email)
@@ -66,7 +66,7 @@ namespace LoanAndRepayAPI.Controllers
         }
 
 
-        //[Authorize]        
+        //[Authorize(Roles ="Customer")]        
         [HttpGet]
         [Route("api/SearchRequestByName")]
         public IHttpActionResult SearchRequestByName(string name, string email)
@@ -116,7 +116,8 @@ namespace LoanAndRepayAPI.Controllers
             return Ok(installmentRequest);
         }
 
-        [Authorize]
+        //Authorize]
+        [Authorize(Roles = "Company")]
         [HttpPost]
         [Route("api/InstallmentRequestStatus")]
         public IHttpActionResult InstallmentRequestStatusUpdate(int id, int status)

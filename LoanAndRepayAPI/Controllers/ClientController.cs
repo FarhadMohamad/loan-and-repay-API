@@ -14,13 +14,15 @@ namespace LoanAndRepayAPI.Controllers
 {
     public class ClientController : ApiController
     {
-        [Authorize]
+        //[Authorize]
         [Route("api/InstallmentRequest")]
         public IHttpActionResult InstallmentRequest(InstallmentRequestViewModel model)
         {
 
-
-            string currentUserId = User.Identity.GetUserId();
+            if (!ModelState.IsValid)
+                return BadRequest("Invalid data.");
+            //string currentUserId = User.Identity.GetUserId();
+            string currentUserId = model.UserId;
 
 
 
@@ -38,10 +40,12 @@ namespace LoanAndRepayAPI.Controllers
 
 
             //}
-
+        
             return Ok();
 
         }
+
+       
 
        //[Authorize]
         [HttpGet]
@@ -49,7 +53,7 @@ namespace LoanAndRepayAPI.Controllers
         public IHttpActionResult StatusPending(string email)
         {
 
-            IList<InstallmentRequestStatusViewModel> installmentRequest = null;
+            List<InstallmentRequestStatusViewModel> installmentRequest = null;
 
             //string currentUserId = User.Identity.GetUserId();
 

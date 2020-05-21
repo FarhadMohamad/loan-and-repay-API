@@ -12,20 +12,14 @@ namespace LoanAndRepayAPI.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class CompanyInfo
+    public partial class Address
     {
-        public string UserId { get; set; }
-        public string CompanyName { get; set; }
-        public Nullable<int> CVR { get; set; }
-        public string Email { get; set; }
-        public string Website { get; set; }
-        public string Phone { get; set; }
-        public string ContactPerson { get; set; }
+        public int Id { get; set; }
+        public string CompanyId { get; set; }
+        public int InstallmentRequestId { get; set; }
         public string StreetName { get; set; }
         public string HouseNumber { get; set; }
         public string CityName { get; set; }
         public Nullable<int> PostCode { get; set; }
-    
-        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

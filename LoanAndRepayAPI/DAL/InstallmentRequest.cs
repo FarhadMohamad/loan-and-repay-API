@@ -15,6 +15,7 @@ namespace LoanAndRepayAPI.DAL
     public partial class InstallmentRequest
     {
         public int Id { get; set; }
+        public string UserId { get; set; }
         public string Company { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -29,7 +30,6 @@ namespace LoanAndRepayAPI.DAL
         public string PayWithIn { get; set; }
         public Nullable<decimal> MonthlyPayment { get; set; }
         public Nullable<int> Status { get; set; }
-        public string UserId { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
     }

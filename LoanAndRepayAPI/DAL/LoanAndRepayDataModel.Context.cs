@@ -17,20 +17,31 @@ namespace LoanAndRepayAPI.DAL
     {
         public LoanAndRepayEntities()
             : base("name=LoanAndRepayEntities")
+
         {
+            // the terrible hack
+            var ensureDLLIsCopied =
+                    System.Data.Entity.SqlServer.SqlProviderServices.Instance;
         }
-    
+
+        //public LoanAndRepayEntities()
+        //    : base("data source=25.95.117.127, 45682&quot;;initial catalog=LoanAndRepay;user id=admin;password=Admin123;multipleactiveresultsets=True" )
+        //{
+        //}
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
     
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
+        public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
-        public virtual DbSet<InstallmentRequest> InstallmentRequests { get; set; }
         public virtual DbSet<CompanyInfo> CompanyInfoes { get; set; }
+        public virtual DbSet<InstallmentRequest> InstallmentRequests { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace LoanAndRepayAPI.Services
                 SmtpClient SmtpServer = new SmtpClient("smtp.live.com");
                 var mail = new System.Net.Mail.MailMessage();
                 mail.From = new MailAddress("mitbud@outlook.com");
-                mail.To.Add("art_ismat@hotmail.com");
+                mail.To.Add(model.Email);
                 mail.Subject = "Installment request for " + model.Company;
                 mail.IsBodyHtml = true;
                 string htmlBody;
