@@ -13,7 +13,7 @@ namespace LoanAndRepayAPI.Controllers
 {
     public class CompanyController : ApiController
     {
-        [Authorize]        
+        //[Authorize]        
         [HttpGet]
         [Route("api/GetRequestList")]
         public IHttpActionResult GetRequestList(string email)

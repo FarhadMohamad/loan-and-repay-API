@@ -17,18 +17,12 @@ namespace LoanAndRepayAPI.DAL
     {
         public LoanAndRepayEntities()
             : base("name=LoanAndRepayEntities")
-
         {
             // the terrible hack
             var ensureDLLIsCopied =
                     System.Data.Entity.SqlServer.SqlProviderServices.Instance;
         }
-
-        //public LoanAndRepayEntities()
-        //    : base("data source=25.95.117.127, 45682&quot;;initial catalog=LoanAndRepay;user id=admin;password=Admin123;multipleactiveresultsets=True" )
-        //{
-        //}
-
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();

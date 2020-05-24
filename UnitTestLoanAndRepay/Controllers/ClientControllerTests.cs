@@ -62,7 +62,7 @@ namespace LoanAndRepayAPI.Controllers.Tests
             {
                 UserId = "e803b255-c968-4952-89ca-83e10e62dd2a",
                 Company = "Driving Licence",
-                FirstName = "we are testing it nowuff",
+                FirstName = "we are testing hii",
                 LastName = "The author",
                 Email = "asdfjl@a.com",
                 Age = 12,

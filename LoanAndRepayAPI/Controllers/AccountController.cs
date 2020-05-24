@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 using Microsoft.AspNet.Identity;
-
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
@@ -347,7 +346,7 @@ namespace LoanAndRepayAPI.Controllers
                 var UserId = UserManager.FindByEmail(model.Email);
                 //Calling provider to save data
                 ClientProvider.CreateUser(model);
-                UserManager.AddToRole(UserId.Id, "Client");
+               UserManager.AddToRole(UserId.Id, "Client");
 
             }
             if (!result.Succeeded)
