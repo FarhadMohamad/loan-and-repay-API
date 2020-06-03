@@ -27,7 +27,7 @@ namespace LoanAndRepayAPI.Controllers
             try
             {
                 ClientProvider.SaveInstallmentRequest(model, currentUserId);
-                EmailService.sendEmailToCompany(model);
+                EmailService.SendEmailToCompany(model);
             }
             catch (Exception)
             {
@@ -101,7 +101,6 @@ namespace LoanAndRepayAPI.Controllers
 
                                       select new InstallmentRequestStatusViewModel()
                                       {
-
                                           Company = installment.Company,
                                           Status = "Accepted",
 
@@ -139,12 +138,10 @@ namespace LoanAndRepayAPI.Controllers
 
                                       select new InstallmentRequestStatusViewModel()
                                       {
-
                                           Company = installment.Company,
                                           Status = "Rejected"
 
-
-                                      }).ToList<InstallmentRequestStatusViewModel>();
+                                      }).ToList();
             }
 
             if (installmentRequest.Count == 0)

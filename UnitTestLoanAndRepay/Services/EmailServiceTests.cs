@@ -39,7 +39,7 @@ namespace LoanAndRepayAPI.Services.Tests
             Assert.IsNotNull(installmentRequestViewModel.Company);
 
 
-            Assert.AreEqual("sent", EmailService.sendEmailToCompany(installmentRequestViewModel));
+            Assert.AreEqual("sent", EmailService.SendEmailToCompany(installmentRequestViewModel));
 
         }
 
@@ -70,7 +70,7 @@ namespace LoanAndRepayAPI.Services.Tests
             Assert.IsNull(installmentRequestViewModel.Company);
 
 
-            Assert.AreEqual("sent", EmailService.sendEmailToCompany(installmentRequestViewModel));
+            Assert.AreEqual("sent", EmailService.SendEmailToCompany(installmentRequestViewModel));
 
         }
     }

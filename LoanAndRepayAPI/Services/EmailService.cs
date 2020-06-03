@@ -10,7 +10,7 @@ namespace LoanAndRepayAPI.Services
     public class EmailService
     {
 
-        public static string sendEmailToCompany(InstallmentRequestViewModel model)
+        public static string SendEmailToCompany(InstallmentRequestViewModel model)
         {
 
             try

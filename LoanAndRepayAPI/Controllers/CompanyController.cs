@@ -19,6 +19,11 @@ namespace LoanAndRepayAPI.Controllers
         public IHttpActionResult GetRequestList(string email)
         {
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data.");
+            }
+
             IList<InstallmentRequestViewModel> installmentRequest = null;
             //string currentUserId = User.Identity.GetUserId();
             LoanAndRepayEntities entities = new LoanAndRepayEntities();
@@ -27,26 +32,27 @@ namespace LoanAndRepayAPI.Controllers
             {
                 installmentRequest = (from companyInfo in entities.CompanyInfoes
                                       join companyInfoJoin in entities.InstallmentRequests on companyInfo.CompanyName equals companyInfoJoin.Company
-
+                                      join clientAddressJoin in entities.Addresses on companyInfoJoin.Id equals clientAddressJoin.InstallmentId
+                                  
                                       where companyInfo.Email == email
 
                                       select new InstallmentRequestViewModel()
                                       {
-                                          //Id = companyInfoJoin.Id,
-                                          //Company = companyInfoJoin.Company,
-                                          //FirstName = companyInfoJoin.FirstName,
-                                          //LastName = companyInfoJoin.LastName,
-                                          //Email = companyInfoJoin.Email,
-                                          //Age = companyInfoJoin.Age,
-                                          //Phone = companyInfoJoin.Phone,
-                                          //StreetName = companyInfoJoin.StreetName,
-                                          //HouseNumber = companyInfoJoin.HouseNumber,
-                                          //CityName = companyInfoJoin.CityName,
-                                          //PostCode = companyInfoJoin.PostCode,
-                                          //Amount = companyInfoJoin.Amount,
-                                          //PayWithIn = companyInfoJoin.PayWithIn,
-                                          //MonthlyPayment = companyInfoJoin.MonthlyPayment,
-                                          //Status = companyInfoJoin.Status
+                                          Id = companyInfoJoin.Id,
+                                          Company = companyInfoJoin.Company,
+                                          FirstName = companyInfoJoin.FirstName,
+                                          LastName = companyInfoJoin.LastName,
+                                          Email = companyInfoJoin.Email,
+                                          Age = companyInfoJoin.Age,
+                                          Phone = companyInfoJoin.Phone,
+                                          StreetName = clientAddressJoin.StreetName,
+                                          HouseNumber = clientAddressJoin.HouseNumber,
+                                          CityName = clientAddressJoin.CityName,
+                                          PostCode = clientAddressJoin.PostCode,
+                                          Amount = companyInfoJoin.Amount,
+                                          PayWithIn = companyInfoJoin.PayWithIn,
+                                          MonthlyPayment = companyInfoJoin.MonthlyPayment,
+                                          Status = companyInfoJoin.Status
                                       }).Distinct().ToList();
             }
             if (installmentRequest.Count == 0)
@@ -62,6 +68,11 @@ namespace LoanAndRepayAPI.Controllers
         public IHttpActionResult SearchRequestByName(string name, string email)
         {
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data.");
+            }
+
             IList<InstallmentRequestViewModel> installmentRequest = null;
             //string currentUserId = User.Identity.GetUserId();
             LoanAndRepayEntities entities = new LoanAndRepayEntities();
@@ -70,31 +81,32 @@ namespace LoanAndRepayAPI.Controllers
             {
                 installmentRequest = (from companyInfo in entities.CompanyInfoes
                                       join companyInfoJoin in entities.InstallmentRequests on companyInfo.CompanyName equals companyInfoJoin.Company
+                                      join clientAddressJoin in entities.Addresses on companyInfoJoin.Id equals clientAddressJoin.InstallmentId
 
                                       where companyInfo.Email == email
 
                                       select new InstallmentRequestViewModel()
                                       {
-                                          //Id = companyInfoJoin.Id,
-                                          //Company = companyInfoJoin.Company,
-                                          //FirstName = companyInfoJoin.FirstName,
-                                          //LastName = companyInfoJoin.LastName,
-                                          //Email = companyInfoJoin.Email,
-                                          //Age = companyInfoJoin.Age,
-                                          //Phone = companyInfoJoin.Phone,
-                                          //StreetName = companyInfoJoin.StreetName,
-                                          //HouseNumber = companyInfoJoin.HouseNumber,
-                                          //CityName = companyInfoJoin.CityName,
-                                          //PostCode = companyInfoJoin.PostCode,
-                                          //Amount = companyInfoJoin.Amount,
-                                          //PayWithIn = companyInfoJoin.PayWithIn,
-                                          //MonthlyPayment = companyInfoJoin.MonthlyPayment,
-                                          //Status = companyInfoJoin.Status
+                                          Id = companyInfoJoin.Id,
+                                          Company = companyInfoJoin.Company,
+                                          FirstName = companyInfoJoin.FirstName,
+                                          LastName = companyInfoJoin.LastName,
+                                          Email = companyInfoJoin.Email,
+                                          Age = companyInfoJoin.Age,
+                                          Phone = companyInfoJoin.Phone,
+                                          StreetName = clientAddressJoin.StreetName,
+                                          HouseNumber = clientAddressJoin.HouseNumber,
+                                          CityName = clientAddressJoin.CityName,
+                                          PostCode = clientAddressJoin.PostCode,
+                                          Amount = companyInfoJoin.Amount,
+                                          PayWithIn = companyInfoJoin.PayWithIn,
+                                          MonthlyPayment = companyInfoJoin.MonthlyPayment,
+                                          Status = companyInfoJoin.Status
                                       }).Distinct().ToList();
             }
             if (!string.IsNullOrEmpty(name))
             {
-                installmentRequest = installmentRequest.Where(x => x.FirstName.ToLower().Contains(name.Trim())).ToList();
+                installmentRequest = installmentRequest.Where(x => x.FirstName.ToLower().Equals(name.Trim().ToLower())).ToList();
             }
             return Ok(installmentRequest);
         }
@@ -105,6 +117,11 @@ namespace LoanAndRepayAPI.Controllers
         [Route("api/InstallmentRequestStatus")]
         public IHttpActionResult InstallmentRequestStatusUpdate(int id, int status)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data.");
+            }
 
             string currentUserId = User.Identity.GetUserId();
             LoanAndRepayEntities entities = new LoanAndRepayEntities();
