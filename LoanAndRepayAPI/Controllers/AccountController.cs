@@ -327,121 +327,7 @@ namespace LoanAndRepayAPI.Controllers
             return logins;
         }
 
-        // POST api/Account/Register
-        [AllowAnonymous]
-        [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
-            {
-                var UserId = UserManager.FindByEmail(model.Email);
-                //Calling provider to save data
-                ClientProvider.CreateUser(model);
-               UserManager.AddToRole(UserId.Id, "Client");
-
-            }
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
-        }
-
-        // POST api/Account/RegisterCompany
-        [AllowAnonymous]
-        [Route("RegisterCompany")]
-        public async Task<IHttpActionResult> RegisterCompany(RegisterCompanyBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
-            {
-                var UserId = UserManager.FindByEmail(model.Email);
-                //Calling provider to save data
-                CompanyProvider.CreateUser(model, UserId.Id);
-                UserManager.AddToRole(UserId.Id, "Company");
-
-            }
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
-        }
-
-
-        // POST api/User/Login
-        [System.Web.Http.HttpPost]
-        [System.Web.Http.AllowAnonymous]
-        [Route("Login")]
-        public async Task<HttpResponseMessage> LoginUser(LoginUserBindingModel model)
-        {
-            // Invoke the "token" OWIN service to perform the login: /api/token
-            // Ugly hack: I use a server-side HTTP POST because I cannot directly invoke the service (it is deeply hidden in the OAuthAuthorizationServerHandler class)
-            var request = HttpContext.Current.Request;
-            //To use locally
-            //var tokenServiceUrl = "http://127.0.0.1:61902/Token"; 
-            var tokenServiceUrl = request.Url.GetLeftPart(UriPartial.Authority) + request.ApplicationPath + "/Token";
-
-
-            using (var client = new HttpClient())
-            {
-                var requestParams = new List<KeyValuePair<string, string>>
-            {
-                new KeyValuePair<string, string>("grant_type", "password"),
-                new KeyValuePair<string, string>("username", model.Username),
-                new KeyValuePair<string, string>("password", model.Password)
-            };
-                var requestParamsFormUrlEncoded = new FormUrlEncodedContent(requestParams);
-                var tokenServiceResponse = await client.PostAsync(tokenServiceUrl, requestParamsFormUrlEncoded);
-                var responseString = await tokenServiceResponse.Content.ReadAsStringAsync();
-                var responseCode = tokenServiceResponse.StatusCode;
-                var responseMsg = new HttpResponseMessage(responseCode)
-                {
-                    Content = new StringContent(responseString, Encoding.UTF8, "application/json")
-                };
-                if (responseCode == HttpStatusCode.OK)
-                {
-
-                    LoanAndRepayEntities database = new LoanAndRepayEntities();
-
-                    var Bodyresponse = database.AspNetUsers.FirstOrDefault(X => X.Email == model.Username);
-
-                    // Get the roles associated with that user
-                    var userRoles = await UserManager.GetRolesAsync(Bodyresponse.Id.ToString());
-
-                    // Setup a RoleViewModel list of roles and iterate through userRoles adding them to the list
-                    List<UserRoleViewModel> roleList = new List<UserRoleViewModel>();
-                    foreach (var role in userRoles)
-                    {
-                        var item = new UserRoleViewModel { Role = role };
-                        roleList.Add(item);
-                        //return Ok(item);
-                        var res = responseMsg;
-
-                    }
-                }
-                return responseMsg;
-            }
-        }
+        
 
 
 
@@ -597,5 +483,121 @@ namespace LoanAndRepayAPI.Controllers
         }
 
         #endregion
+
+        // POST api/Account/Register
+        [AllowAnonymous]
+        [Route("RegisterClient")]
+        public async Task<IHttpActionResult> RegisterClient(RegisterBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+
+            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                var UserId = UserManager.FindByEmail(model.Email);
+                //Calling provider to save data
+                ClientProvider.CreateUser(model);
+                UserManager.AddToRole(UserId.Id, "Client");
+
+            }
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
+            return Ok();
+        }
+
+        // POST api/Account/RegisterCompany
+        [AllowAnonymous]
+        [Route("RegisterCompany")]
+        public async Task<IHttpActionResult> RegisterCompany(RegisterCompanyBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+
+            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                var UserId = UserManager.FindByEmail(model.Email);
+                //Calling provider to save data
+                CompanyProvider.SaveCompanyInfo(model, UserId.Id);
+                UserManager.AddToRole(UserId.Id, "Company");
+
+            }
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
+            return Ok();
+        }
+
+
+        // POST api/User/Login
+        [System.Web.Http.HttpPost]
+        [System.Web.Http.AllowAnonymous]
+        [Route("Login")]
+        public async Task<HttpResponseMessage> LoginUser(LoginUserBindingModel model)
+        {
+            // Invoke the "token" OWIN service to perform the login: /api/token
+            // Ugly hack: I use a server-side HTTP POST because I cannot directly invoke the service (it is deeply hidden in the OAuthAuthorizationServerHandler class)
+            var request = HttpContext.Current.Request;
+            //To use locally
+            //var tokenServiceUrl = "http://127.0.0.1:61902/Token"; 
+            var tokenServiceUrl = request.Url.GetLeftPart(UriPartial.Authority) + request.ApplicationPath + "/Token";
+
+
+            using (var client = new HttpClient())
+            {
+                var requestParams = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("grant_type", "password"),
+                new KeyValuePair<string, string>("username", model.Username),
+                new KeyValuePair<string, string>("password", model.Password)
+            };
+                var requestParamsFormUrlEncoded = new FormUrlEncodedContent(requestParams);
+                var tokenServiceResponse = await client.PostAsync(tokenServiceUrl, requestParamsFormUrlEncoded);
+                var responseString = await tokenServiceResponse.Content.ReadAsStringAsync();
+                var responseCode = tokenServiceResponse.StatusCode;
+                var responseMsg = new HttpResponseMessage(responseCode)
+                {
+                    Content = new StringContent(responseString, Encoding.UTF8, "application/json")
+                };
+                if (responseCode == HttpStatusCode.OK)
+                {
+
+                    LoanAndRepayEntities database = new LoanAndRepayEntities();
+
+                    var Bodyresponse = database.AspNetUsers.FirstOrDefault(X => X.Email == model.Username);
+
+                    // Get the roles associated with that user
+                    var userRoles = await UserManager.GetRolesAsync(Bodyresponse.Id.ToString());
+
+                    // Setup a RoleViewModel list of roles and iterate through userRoles adding them to the list
+                    List<UserRoleViewModel> roleList = new List<UserRoleViewModel>();
+                    foreach (var role in userRoles)
+                    {
+                        var item = new UserRoleViewModel { Role = role };
+                        roleList.Add(item);
+                        //return Ok(item);
+                        var res = responseMsg;
+
+                    }
+                }
+                return responseMsg;
+            }
+        }
     }
 }

@@ -18,9 +18,6 @@ namespace LoanAndRepayAPI.DAL
         public LoanAndRepayEntities()
             : base("name=LoanAndRepayEntities")
         {
-            // the terrible hack
-            var ensureDLLIsCopied =
-                    System.Data.Entity.SqlServer.SqlProviderServices.Instance;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

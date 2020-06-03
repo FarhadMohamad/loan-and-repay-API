@@ -9,12 +9,11 @@ namespace LoanAndRepayAPI.Providers
 {
     public class ClientProvider
     {
-        public static void CreateUser(RegisterBindingModel registerBindingModel)
+        public static void  CreateUser(RegisterBindingModel registerBindingModel)
         {
 
-            LoanAndRepayEntities db = new LoanAndRepayEntities();
-
-            AspNetUser user = db.AspNetUsers.SingleOrDefault(x => x.Email == registerBindingModel.Email);
+            LoanAndRepayEntities entities = new LoanAndRepayEntities();
+            AspNetUser user = entities.AspNetUsers.SingleOrDefault(x => x.Email == registerBindingModel.Email);
 
             if (user != null)
             {
@@ -22,41 +21,44 @@ namespace LoanAndRepayAPI.Providers
                 user.LastName = registerBindingModel.LastName;
                 user.PhoneNumber = registerBindingModel.PhoneNumber;
                 user.Email = registerBindingModel.Email;
-
-                db.SaveChanges();
-            }
-
+                
+                entities.SaveChanges();
+            }            
 
         }
 
         public static void SaveInstallmentRequest(InstallmentRequestViewModel model, string UserId)
         {
 
-            LoanAndRepayEntities loanAndRepayEntities = new LoanAndRepayEntities();
-            InstallmentRequest paymentRequest = new InstallmentRequest();
-            // var user = loanAndRepayEntities.AspNetUsers.Where(x => x.Email == model.Email).SingleOrDefault();
+            LoanAndRepayEntities entities = new LoanAndRepayEntities();
+            InstallmentRequest installmentRequest = new InstallmentRequest();
+            DAL.Address address = new DAL.Address();
 
-            //if (user != null)
-            //{
-            paymentRequest.UserId = UserId;
-            paymentRequest.Company = model.Company;
-            paymentRequest.FirstName = model.FirstName;
-            paymentRequest.LastName = model.LastName;
-            paymentRequest.Email = model.Email;
-            paymentRequest.Age = model.Age;
-            paymentRequest.Phone = model.Phone;
-            paymentRequest.StreetName = model.StreetName;
-            paymentRequest.HouseNumber = model.HouseNumber;
-            paymentRequest.CityName = model.CityName;
-            paymentRequest.PostCode = model.PostCode;
-            paymentRequest.Amount = model.Amount;
-            paymentRequest.PayWithIn = model.PayWithIn;
-            paymentRequest.MonthlyPayment = model.MonthlyPayment;
-            paymentRequest.Status = model.Status;
-            loanAndRepayEntities.InstallmentRequests.Add(paymentRequest);
-            loanAndRepayEntities.SaveChanges();
-            //}
+            //First saves the installment request information in the installment table
+            installmentRequest.UserId = UserId;
+            installmentRequest.Company = model.Company;
+            installmentRequest.FirstName = model.FirstName;
+            installmentRequest.LastName = model.LastName;
+            installmentRequest.Email = model.Email;
+            installmentRequest.Age = model.Age;
+            installmentRequest.Phone = model.Phone;         
+            installmentRequest.Amount = model.Amount;
+            installmentRequest.PayWithIn = model.PayWithIn;
+            installmentRequest.MonthlyPayment = model.MonthlyPayment;
+            installmentRequest.Status = model.Status;
+            entities.InstallmentRequests.Add(installmentRequest);
+            entities.SaveChanges();
 
+            //Then saves the installment request address in the address table
+            address.StreetName = model.StreetName;
+            address.HouseNumber = model.HouseNumber;
+            address.CityName = model.CityName;
+            address.PostCode = model.PostCode;
+
+            var findInstallmentRequestId = entities.InstallmentRequests.Where(x => x.Company== model.Company && x.Email == model.Email && x.Status == 0).SingleOrDefault();
+            address.InstallmentId = findInstallmentRequestId.Id;
+            entities.Addresses.Add(address);
+            entities.SaveChanges();
 
         }
     }

@@ -5,20 +5,22 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="159aa108e868417cbcef438eb6509009" Name="Diagram1">
-        <EntityTypeShape EntityType="LoanAndRepayModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="LoanAndRepayModel.Address" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="LoanAndRepayModel.AspNetRole" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="LoanAndRepayModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="LoanAndRepayModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="LoanAndRepayModel.AspNetUser" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="LoanAndRepayModel.CompanyInfo" Width="1.5" PointX="5.25" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="LoanAndRepayModel.InstallmentRequest" Width="1.5" PointX="5.25" PointY="10.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="LoanAndRepayModel.sysdiagram" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
-        <AssociationConnector Association="LoanAndRepayModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
-        <AssociationConnector Association="LoanAndRepayModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
-        <AssociationConnector Association="LoanAndRepayModel.FK_CompanyInfo_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="LoanAndRepayModel.FK_InstallmentRequest_AspNetUsers" ManuallyRouted="false" />
-        <AssociationConnector Association="LoanAndRepayModel.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="LoanAndRepayModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="LoanAndRepayModel.Address" Width="1.5" PointX="7.5" PointY="9" />
+        <EntityTypeShape EntityType="LoanAndRepayModel.AspNetRole" Width="1.5" PointX="0.75" PointY="7" />
+        <EntityTypeShape EntityType="LoanAndRepayModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="1.625" />
+        <EntityTypeShape EntityType="LoanAndRepayModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="4.375" />
+        <EntityTypeShape EntityType="LoanAndRepayModel.AspNetUser" Width="1.5" PointX="3" PointY="5.5" />
+        <EntityTypeShape EntityType="LoanAndRepayModel.CompanyInfo" Width="1.5" PointX="5.25" PointY="11.625" />
+        <EntityTypeShape EntityType="LoanAndRepayModel.InstallmentRequest" Width="1.5" PointX="5.25" PointY="6.875" />
+        <EntityTypeShape EntityType="LoanAndRepayModel.sysdiagram" Width="1.5" PointX="7.75" PointY="0.75" />
+        <AssociationConnector Association="LoanAndRepayModel.FK_Address_CompanyInfo" />
+        <AssociationConnector Association="LoanAndRepayModel.FK_Address_InstallmentRequests" />
+        <AssociationConnector Association="LoanAndRepayModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="LoanAndRepayModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="LoanAndRepayModel.FK_CompanyInfo_AspNetUsers1" />
+        <AssociationConnector Association="LoanAndRepayModel.FK_InstallmentRequest_AspNetUsers" />
+        <AssociationConnector Association="LoanAndRepayModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

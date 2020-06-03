@@ -14,18 +14,20 @@ namespace LoanAndRepayAPI.DAL
     
     public partial class CompanyInfo
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CompanyInfo()
+        {
+            this.Addresses = new HashSet<Address>();
+        }
+    
         public string UserId { get; set; }
         public string CompanyName { get; set; }
         public Nullable<int> CVR { get; set; }
         public string Email { get; set; }
-        public string Website { get; set; }
         public string Phone { get; set; }
-        public string ContactPerson { get; set; }
-        public string StreetName { get; set; }
-        public string HouseNumber { get; set; }
-        public string CityName { get; set; }
-        public Nullable<int> PostCode { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Address> Addresses { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
     }
 }

@@ -1,75 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
+﻿using LoanAndRepayAPI.DAL;
 using LoanAndRepayAPI.Models;
-using Microsoft.AspNet.Identity;
-using LoanAndRepayAPI.DAL;
 using LoanAndRepayAPI.Providers;
 using LoanAndRepayAPI.Services;
+using Microsoft.AspNet.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
 
 namespace LoanAndRepayAPI.Controllers
 {
     public class ClientController : ApiController
     {
-        //[Authorize]
+        [Authorize(Roles = "Client")]
         [Route("api/InstallmentRequest")]
         public IHttpActionResult InstallmentRequest(InstallmentRequestViewModel model)
         {
 
             if (!ModelState.IsValid)
+            {
                 return BadRequest("Invalid data.");
-            //string currentUserId = User.Identity.GetUserId();
-            string currentUserId = model.UserId;
+            }
 
+            string currentUserId = User.Identity.GetUserId();
 
+            try
+            {
+                ClientProvider.SaveInstallmentRequest(model, currentUserId);
+                EmailService.sendEmailToCompany(model);
+            }
+            catch (Exception)
+            {
 
-            LoanAndRepayEntities loanAndRepayEntities = new LoanAndRepayEntities();
+                return NotFound();
+            }
 
-            //Request r = new Request();
-
-
-
-           // var findUserId = loanAndRepayEntities.AspNetUsers.Where(x => x.Id == currentUserId).SingleOrDefault();
-            //if (req != null)
-            //{
-            ClientProvider.SaveInstallmentRequest(model, currentUserId);
-            EmailService.sendEmailToCompany(model);
-
-
-            //}
-        
             return Ok();
 
         }
 
-       
-
-       //[Authorize]
+        //[Authorize]
         [HttpGet]
         [Route("api/StatusPending")]
         public IHttpActionResult StatusPending(string email)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data.");
+            }
 
             List<InstallmentRequestStatusViewModel> installmentRequest = null;
 
             //string currentUserId = User.Identity.GetUserId();
 
-            LoanAndRepayEntities loanAndRepayEntities = new LoanAndRepayEntities();
+            LoanAndRepayEntities entities = new LoanAndRepayEntities();
 
-            
-
-            var database = new LoanAndRepayEntities();
-           
-
-            using (database)
+            using (entities)
             {
-                installmentRequest = (from installment in database.InstallmentRequests
-                                          where installment.Email == email && installment.Status == 0
-                                     
-
+                installmentRequest = (from installment in entities.InstallmentRequests
+                                      where installment.Email == email && installment.Status == 0
 
                                       select new InstallmentRequestStatusViewModel()
                                       {
@@ -78,7 +67,7 @@ namespace LoanAndRepayAPI.Controllers
                                           Status = "Pending",
 
 
-                                      }).ToList<InstallmentRequestStatusViewModel>();
+                                      }).ToList();
             }
 
             if (installmentRequest.Count == 0)
@@ -93,22 +82,21 @@ namespace LoanAndRepayAPI.Controllers
         [Route("api/StatusAccepted")]
         public IHttpActionResult StatusAccepted(string email)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data.");
+            }
 
             IList<InstallmentRequestStatusViewModel> installmentRequest = null;
 
-           // string currentUserId = User.Identity.GetUserId();
+            // string currentUserId = User.Identity.GetUserId();
 
-            LoanAndRepayEntities loanAndRepayEntities = new LoanAndRepayEntities();
+            LoanAndRepayEntities entities = new LoanAndRepayEntities();
 
-
-
-            var database = new LoanAndRepayEntities();
-
-
-            using (database)
+            using (entities)
             {
-                installmentRequest = (from installment in database.InstallmentRequests
-                                     where installment.Email == email && installment.Status == 1
+                installmentRequest = (from installment in entities.InstallmentRequests
+                                      where installment.Email == email && installment.Status == 1
                                       //where installment.Status == 1
 
                                       select new InstallmentRequestStatusViewModel()
@@ -117,8 +105,7 @@ namespace LoanAndRepayAPI.Controllers
                                           Company = installment.Company,
                                           Status = "Accepted",
 
-
-                                      }).ToList<InstallmentRequestStatusViewModel>();
+                                      }).ToList();
             }
 
             if (installmentRequest.Count == 0)
@@ -133,21 +120,20 @@ namespace LoanAndRepayAPI.Controllers
         [Route("api/StatusRejected")]
         public IHttpActionResult StatusRejected(string email)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data.");
+            }
 
             IList<InstallmentRequestStatusViewModel> installmentRequest = null;
 
             //string currentUserId = User.Identity.GetUserId();
 
-            LoanAndRepayEntities loanAndRepayEntities = new LoanAndRepayEntities();
+            LoanAndRepayEntities entities = new LoanAndRepayEntities();
 
-
-
-            var database = new LoanAndRepayEntities();
-
-
-            using (database)
+            using (entities)
             {
-                installmentRequest = (from installment in database.InstallmentRequests
+                installmentRequest = (from installment in entities.InstallmentRequests
                                       where installment.Email == email && installment.Status == 2
                                       //where installment.Status == 2
 

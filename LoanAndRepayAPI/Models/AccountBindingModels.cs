@@ -56,7 +56,7 @@ namespace LoanAndRepayAPI.Models
 
     }
 
-    public class RegisterCompanyBindingModel
+    public class RegisterCompanyBindingModel: Address
     {
         public string CompanyName { get; set; }
         public int CVR { get; set; }
@@ -73,14 +73,7 @@ namespace LoanAndRepayAPI.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-        public string Website { get; set; }
-        public string Phone { get; set; }
-        public string ContactPerson { get; set; }
-        public string StreetName { get; set; }
-        public string HouseNumber { get; set; }
-        public string CityName { get; set; }
-        public int PostCode { get; set; }
-        public string PhoneNumber { get; set; }
+        public string Phone { get; set; } 
 
 
 

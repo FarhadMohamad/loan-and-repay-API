@@ -15,11 +15,14 @@ namespace LoanAndRepayAPI.DAL
     public partial class Address
     {
         public int Id { get; set; }
-        public string CompanyId { get; set; }
-        public int InstallmentRequestId { get; set; }
+        public Nullable<int> InstallmentId { get; set; }
+        public string UserId { get; set; }
         public string StreetName { get; set; }
         public string HouseNumber { get; set; }
         public string CityName { get; set; }
         public Nullable<int> PostCode { get; set; }
+    
+        public virtual CompanyInfo CompanyInfo { get; set; }
+        public virtual InstallmentRequest InstallmentRequest { get; set; }
     }
 }

@@ -14,6 +14,12 @@ namespace LoanAndRepayAPI.DAL
     
     public partial class InstallmentRequest
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public InstallmentRequest()
+        {
+            this.Addresses = new HashSet<Address>();
+        }
+    
         public int Id { get; set; }
         public string UserId { get; set; }
         public string Company { get; set; }
@@ -22,15 +28,14 @@ namespace LoanAndRepayAPI.DAL
         public string Email { get; set; }
         public Nullable<int> Age { get; set; }
         public string Phone { get; set; }
-        public string StreetName { get; set; }
-        public string HouseNumber { get; set; }
-        public string CityName { get; set; }
-        public Nullable<int> PostCode { get; set; }
         public Nullable<decimal> Amount { get; set; }
         public string PayWithIn { get; set; }
         public Nullable<decimal> MonthlyPayment { get; set; }
         public Nullable<int> Status { get; set; }
+        public int AddressId { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Address> Addresses { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
     }
 }
