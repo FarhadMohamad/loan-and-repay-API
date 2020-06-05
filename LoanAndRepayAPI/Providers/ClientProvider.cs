@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using LoanAndRepayAPI.DAL;
 using LoanAndRepayAPI.Models;
-using LoanAndRepayAPI.DAL;
+using System.Linq;
 
 namespace LoanAndRepayAPI.Providers
 {
     public class ClientProvider
     {
-        public static void  CreateUser(RegisterBindingModel registerBindingModel)
+        public static void CreateUser(RegisterBindingModel registerBindingModel)
         {
 
             LoanAndRepayEntities entities = new LoanAndRepayEntities();
@@ -21,9 +18,9 @@ namespace LoanAndRepayAPI.Providers
                 user.LastName = registerBindingModel.LastName;
                 user.PhoneNumber = registerBindingModel.PhoneNumber;
                 user.Email = registerBindingModel.Email;
-                
+
                 entities.SaveChanges();
-            }            
+            }
 
         }
 
@@ -41,24 +38,28 @@ namespace LoanAndRepayAPI.Providers
             installmentRequest.LastName = model.LastName;
             installmentRequest.Email = model.Email;
             installmentRequest.Age = model.Age;
-            installmentRequest.Phone = model.Phone;         
+            installmentRequest.Phone = model.Phone;
             installmentRequest.Amount = model.Amount;
             installmentRequest.PayWithIn = model.PayWithIn;
             installmentRequest.MonthlyPayment = model.MonthlyPayment;
             installmentRequest.Status = model.Status;
             entities.InstallmentRequests.Add(installmentRequest);
             entities.SaveChanges();
-
+            var checkExistingInstallment = entities.InstallmentRequests.Where(x => x.Company == model.Company && x.Email == model.Email).FirstOrDefault();
+                       
             //Then saves the installment request address in the address table
             address.StreetName = model.StreetName;
             address.HouseNumber = model.HouseNumber;
             address.CityName = model.CityName;
             address.PostCode = model.PostCode;
 
-            var findInstallmentRequestId = entities.InstallmentRequests.Where(x => x.Company== model.Company && x.Email == model.Email && x.Status == 0).SingleOrDefault();
-            address.InstallmentId = findInstallmentRequestId.Id;
+            address.InstallmentId = checkExistingInstallment.Id;
             entities.Addresses.Add(address);
             entities.SaveChanges();
+
+
+
+
 
         }
     }

@@ -28,6 +28,7 @@ namespace LoanAndRepayAPI.Controllers
             {
                 ClientProvider.SaveInstallmentRequest(model, currentUserId);
                 EmailService.SendEmailToCompany(model);
+                return Ok();
             }
             catch (Exception)
             {
@@ -35,7 +36,7 @@ namespace LoanAndRepayAPI.Controllers
                 return NotFound();
             }
 
-            return Ok();
+ 
 
         }
 
