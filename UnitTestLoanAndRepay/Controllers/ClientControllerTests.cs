@@ -22,57 +22,49 @@ namespace LoanAndRepayAPI.Controllers.Tests
     {
 
         [TestMethod]
-        public void StatusPendingTest()
-
+        public void StatusPendingPassTest()
         {
             //Arrange
             InstallmentRequestStatusViewModel installment = new InstallmentRequestStatusViewModel()
             {
-                Company = "Copenhagen",
+                Company = "Alliance Trafikskole",
                 Status = "Pending"
-
             };
             var controller = new ClientController();
             //Act
-            var actionResult = controller.StatusPending("string@shit.com");
+            var actionResult = controller.StatusPending("farhad@hotmail.dk");
             var response = actionResult as OkNegotiatedContentResult<List<InstallmentRequestStatusViewModel>>;
-
             //Assert
             Assert.IsNotNull(response);
-
             Assert.AreEqual(installment.Status, response.Content[1].Status);
             Assert.AreEqual(installment.Company, response.Content[1].Company);
-
         }
 
 
 
         [TestMethod]
-        public void InstallmentRequestTest()
+        public void InstallmentRequestPassTest()
         {
-
             // Arrange  
             var controller = new ClientController();
-
             //Act
             var actionResult = controller.InstallmentRequest(new InstallmentRequestViewModel
             {
                 UserId = "e803b255-c968-4952-89ca-83e10e62dd2a",
-                Company = "Driving Licence",
-                FirstName = "we are testing hii",
-                LastName = "The author",
-                Email = "asdfjl@a.com",
-                Age = 12,
-                Phone = "234324",
-                StreetName = "asdfasd",
-                HouseNumber = "sadfasdf",
-                CityName = "asdf",
-                PostCode = 333,
-                Amount = 123,
+                Company = "Alliance Trafikskole",
+                FirstName = "Farhad",
+                LastName = "Janus",
+                Email = "farhad@hotmail.dk",
+                Age = 30,
+                Phone = "42221047",
+                StreetName = "Gravenstensvej",
+                HouseNumber = "8",
+                CityName = "Sorø",
+                PostCode = 4180,
+                Amount = 1000,
                 PayWithIn = "6 months",
-                MonthlyPayment = 2342
+                //MonthlyPayment = 191.67
             });
-
             //Assert
             Assert.IsNotNull(actionResult);
             Assert.IsInstanceOfType(actionResult, typeof(OkResult));

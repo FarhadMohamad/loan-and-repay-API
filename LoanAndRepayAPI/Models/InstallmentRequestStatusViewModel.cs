@@ -9,6 +9,5 @@ namespace LoanAndRepayAPI.Models
     {
         public string Company { get; set; }
         public string Status { get; set; }
-
     }
 }

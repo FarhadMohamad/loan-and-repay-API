@@ -32,7 +32,7 @@ namespace LoanAndRepayAPI.Models
         public string ConfirmPassword { get; set; }
     }
 
-    public class RegisterBindingModel
+    public class RegisterBindingModel: RegisterCompanyBindingModel
     {
 
         public string FirstName { get; set; }

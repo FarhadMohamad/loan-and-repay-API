@@ -104,9 +104,8 @@
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
           <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PayWithIn" Type="nvarchar" MaxLength="50" />
-          <Property Name="MonthlyPayment" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="MonthlyPayment" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Status" Type="int" />
-          <Property Name="AddressId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -412,9 +411,8 @@
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PayWithIn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MonthlyPayment" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="MonthlyPayment" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Status" Type="Int32" />
-          <Property Name="AddressId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Addresses" Relationship="LoanAndRepayModel.FK_Address_InstallmentRequests" FromRole="InstallmentRequest" ToRole="Address" />
           <NavigationProperty Name="AspNetUser" Relationship="LoanAndRepayModel.FK_InstallmentRequest_AspNetUsers" FromRole="InstallmentRequest" ToRole="AspNetUser" />
         </EntityType>
@@ -598,7 +596,6 @@
           <EntitySetMapping Name="InstallmentRequests">
             <EntityTypeMapping TypeName="LoanAndRepayModel.InstallmentRequest">
               <MappingFragment StoreEntitySet="InstallmentRequests">
-                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="MonthlyPayment" ColumnName="MonthlyPayment" />
                 <ScalarProperty Name="PayWithIn" ColumnName="PayWithIn" />

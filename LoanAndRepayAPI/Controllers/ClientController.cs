@@ -16,14 +16,11 @@ namespace LoanAndRepayAPI.Controllers
         [Route("api/InstallmentRequest")]
         public IHttpActionResult InstallmentRequest(InstallmentRequestViewModel model)
         {
-
             if (!ModelState.IsValid)
             {
                 return BadRequest("Invalid data.");
             }
-
             string currentUserId = User.Identity.GetUserId();
-
             try
             {
                 ClientProvider.SaveInstallmentRequest(model, currentUserId);
@@ -32,11 +29,8 @@ namespace LoanAndRepayAPI.Controllers
             }
             catch (Exception)
             {
-
                 return NotFound();
             }
-
- 
 
         }
 
@@ -87,11 +81,8 @@ namespace LoanAndRepayAPI.Controllers
             {
                 return BadRequest("Invalid data.");
             }
-
             IList<InstallmentRequestStatusViewModel> installmentRequest = null;
-
             // string currentUserId = User.Identity.GetUserId();
-
             LoanAndRepayEntities entities = new LoanAndRepayEntities();
 
             using (entities)

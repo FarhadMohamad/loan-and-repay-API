@@ -32,7 +32,6 @@ namespace LoanAndRepayAPI.DAL
         public string PayWithIn { get; set; }
         public Nullable<decimal> MonthlyPayment { get; set; }
         public Nullable<int> Status { get; set; }
-        public int AddressId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Address> Addresses { get; set; }
