@@ -142,5 +142,38 @@ namespace LoanAndRepayAPI.Controllers
             }
             return Ok(installmentRequest);
         }
+
+        //[Authorize]        
+        [HttpGet]
+        [Route("api/CompanyName")]
+        public IHttpActionResult CompanyName()
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            IList<CompanyNames> companyList = null;
+            //string currentUserId = User.Identity.GetUserId();
+            LoanAndRepayEntities entities = new LoanAndRepayEntities();
+
+
+            using (entities)
+            {
+                companyList = (from companyInfo in entities.CompanyInfoes
+
+                               select new CompanyNames()
+                               {
+                                   Name = companyInfo.CompanyName
+
+                               }).OrderBy(x=>x.Name).ToList();
+            }
+            if (companyList.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(companyList);
+        }
     }
 }

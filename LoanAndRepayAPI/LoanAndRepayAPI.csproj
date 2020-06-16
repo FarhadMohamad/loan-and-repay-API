@@ -338,6 +338,7 @@
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\CompanyNames.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InstallmentRequestStatusViewModel.cs" />
     <Compile Include="Models\InstallmentRequestViewModel.cs" />
