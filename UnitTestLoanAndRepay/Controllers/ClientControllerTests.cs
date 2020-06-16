@@ -27,12 +27,12 @@ namespace LoanAndRepayAPI.Controllers.Tests
             //Arrange
             InstallmentRequestStatusViewModel installment = new InstallmentRequestStatusViewModel()
             {
-                Company = "Alliance Trafikskole",
+                Company = "Driving Licence",
                 Status = "Pending"
             };
             var controller = new ClientController();
             //Act
-            var actionResult = controller.StatusPending("farhad@hotmail.dk");
+            var actionResult = controller.StatusPending("a@a.com");
             var response = actionResult as OkNegotiatedContentResult<List<InstallmentRequestStatusViewModel>>;
             //Assert
             Assert.IsNotNull(response);
