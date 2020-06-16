@@ -33,7 +33,7 @@ namespace LoanAndRepayAPI.Controllers
                 installmentRequest = (from companyInfo in entities.CompanyInfoes
                                       join companyInfoJoin in entities.InstallmentRequests on companyInfo.CompanyName equals companyInfoJoin.Company
                                       join clientAddressJoin in entities.Addresses on companyInfoJoin.Id equals clientAddressJoin.InstallmentId
-                                  
+
                                       where companyInfo.Email == email
 
                                       select new InstallmentRequestViewModel()
@@ -76,7 +76,7 @@ namespace LoanAndRepayAPI.Controllers
             IList<InstallmentRequestViewModel> installmentRequest = null;
             //string currentUserId = User.Identity.GetUserId();
             LoanAndRepayEntities entities = new LoanAndRepayEntities();
-                       
+
             using (entities)
             {
                 installmentRequest = (from companyInfo in entities.CompanyInfoes
@@ -135,7 +135,7 @@ namespace LoanAndRepayAPI.Controllers
                 {
                     req.Status = status;
                     entities.SaveChanges();
-                   
+
                 }
                 else if (status == 2 && req != null)
                 {
@@ -148,5 +148,31 @@ namespace LoanAndRepayAPI.Controllers
             return Ok();
         }
 
+        //[HttpGet]
+        //[Route("api/companyName")]
+        //public IHttpActionResult CompanyName()
+        //{
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest("Invalid data.");
+        //    }
+
+        //    List<string> companyName = new List<string>();
+        //    LoanAndRepayEntities entities = new LoanAndRepayEntities();
+
+        //    using (entities)
+        //    {
+        //        companyName = entities.CompanyInfoes.Select(CName => CName.CompanyName).ToList();
+
+
+        //        return Ok(companyName);
+        //    }
+
+
+        //}
+
+
     }
 }
+
