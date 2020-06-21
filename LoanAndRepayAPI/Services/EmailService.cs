@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Web;
 using LoanAndRepayAPI.Models;
+using LoanAndRepayAPI.DAL;
 namespace LoanAndRepayAPI.Services
 {
     public class EmailService
@@ -12,14 +13,16 @@ namespace LoanAndRepayAPI.Services
 
         public static string SendEmailToCompany(InstallmentRequestViewModel model)
         {
-
+            LoanAndRepayEntities entities = new LoanAndRepayEntities();
+            var findEmail = entities.CompanyInfoes.Where(x => x.CompanyName == model.Company).FirstOrDefault();
+            
             try
             {
 
                 SmtpClient SmtpServer = new SmtpClient("smtp.live.com");
                 var mail = new System.Net.Mail.MailMessage();
                 mail.From = new MailAddress("mitbud@outlook.com");
-                mail.To.Add(model.Email);
+                mail.To.Add(findEmail.Email);
                 mail.Subject = "Installment request for " + model.Company;
                 mail.IsBodyHtml = true;
                 string htmlBody;

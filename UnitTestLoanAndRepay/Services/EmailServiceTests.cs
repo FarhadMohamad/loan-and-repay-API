@@ -19,7 +19,7 @@ namespace LoanAndRepayAPI.Services.Tests
             InstallmentRequestViewModel installmentRequestViewModel = new InstallmentRequestViewModel
             {
 
-                Company = "Driving Licence",
+                Company = "Alliance Trafikskole",
                 FirstName = "for the email",
                 LastName = "Atmar",
                 Email = "art_ismat@hotmail.com",
@@ -33,13 +33,12 @@ namespace LoanAndRepayAPI.Services.Tests
                 PayWithIn = "6 months",
                 MonthlyPayment = 2342
 
-
             };
 
             //Assert.IsNotNull(installmentRequestViewModel.Company);
 
 
-            Assert.Equals("sent", EmailService.SendEmailToCompany(installmentRequestViewModel));
+            Assert.AreEqual("sent", EmailService.SendEmailToCompany(installmentRequestViewModel));
 
         }
 
@@ -50,10 +49,10 @@ namespace LoanAndRepayAPI.Services.Tests
             InstallmentRequestViewModel installmentRequestViewModel = new InstallmentRequestViewModel
             {
 
-                
+                //Company = "Alliance Trafikskole",
                 FirstName = "for the email",
                 LastName = "Atmar",
-                Email = "art_ismat@hotmail.com",
+                //Email = "art_ismat@hotmail.com",
                 Age = 12,
                 Phone = "234324",
                 StreetName = "asdfasd",
@@ -68,9 +67,10 @@ namespace LoanAndRepayAPI.Services.Tests
             };
 
             Assert.IsNull(installmentRequestViewModel.Company);
+            Assert.IsNull(installmentRequestViewModel.Email);
 
 
-            Assert.Equals("sent", EmailService.SendEmailToCompany(installmentRequestViewModel));
+            //Assert.AreEqual("sent", EmailService.SendEmailToCompany(installmentRequestViewModel));
 
         }
     }

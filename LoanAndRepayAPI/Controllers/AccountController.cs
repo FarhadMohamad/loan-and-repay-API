@@ -514,6 +514,45 @@ namespace LoanAndRepayAPI.Controllers
             return Ok();
         }
 
+        //// POST api/Account/RegisterCompany
+        //[AllowAnonymous]
+        //[Route("RegisterCompany")]
+        //public async Task<IHttpActionResult> RegisterCompany(RegisterCompanyBindingModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        bool userExists = loanAndRepayEntities.CompanyInfoes.Where(x => x.CompanyName == model.CompanyName) != null;
+        //        if (userExists == false)
+        //            return BadRequest(ModelState);
+        //    }
+
+        //    LoanAndRepayEntities loanAndRepayEntities = new LoanAndRepayEntities();
+
+        //    //Calling provider to save data
+
+        //    {
+        //        var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+
+        //        IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+        //        if (result.Succeeded)
+        //        {
+        //            var UserId = UserManager.FindByEmail(model.Email);
+        //            CompanyProvider.SaveCompanyInfo(model, UserId.Id);
+        //            UserManager.AddToRole(UserId.Id, "Company");
+
+
+        //        }
+        //        if (!result.Succeeded)
+        //        {
+        //            return GetErrorResult(result);
+        //        }
+        //        return Ok();
+        //    }
+
+        //    return BadRequest("Company name or email already taken");          
+
+        //}
         // POST api/Account/RegisterCompany
         [AllowAnonymous]
         [Route("RegisterCompany")]
@@ -523,27 +562,35 @@ namespace LoanAndRepayAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
-            if (result.Succeeded)
+            using (LoanAndRepayEntities entities = new LoanAndRepayEntities())
             {
-                var UserId = UserManager.FindByEmail(model.Email);
-                //Calling provider to save data
-                CompanyProvider.SaveCompanyInfo(model, UserId.Id);
-                UserManager.AddToRole(UserId.Id, "Company");
+                var companyName = entities.CompanyInfoes.FirstOrDefault(x => x.CompanyName == model.CompanyName);
+                if (companyName == null)
+                {
+                    var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
-            }
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
+                    IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
-            return Ok();
+                    if (result.Succeeded)
+                    {
+                        var UserId = UserManager.FindByEmail(model.Email);
+                        //Calling provider to save data
+                        CompanyProvider.SaveCompanyInfo(model, UserId.Id);
+                        UserManager.AddToRole(UserId.Id, "Company");
+
+                    }
+                    if (!result.Succeeded)
+                    {
+                        return GetErrorResult(result);
+                    }
+
+                    return Ok();
+                }
+            }
+            return BadRequest("Company name is already taken");
+
+
         }
-
 
         // POST api/User/Login
         [System.Web.Http.HttpPost]
