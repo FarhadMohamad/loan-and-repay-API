@@ -41,7 +41,7 @@ namespace LoanAndRepayAPI.Services
                       + "Amount = " + model.Amount + "<br />"
                    + "Pay within = " + model.PayWithIn + "<br />" + "<br />"
                    + "Regards," + "<br />"
-                + model.FirstName + ".";
+                + "SteamFoss" + ".";
                 mail.Body = htmlBody;
                 SmtpServer.Port = 587;
                 SmtpServer.UseDefaultCredentials = false;
